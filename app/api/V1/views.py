@@ -9,12 +9,13 @@ Red_flags=[{'flag_id':1,
             'status' : 'pending',
             'Comment':'dfffsfsfdsfsdfsdfdsfdfsdffdffdfdfffsdffffdf',
             }]
+
 class RedFlags(Resource):
     def __init__(self):
         self.db = Red_flags
         self.id=len(Red_flags)+1
         
-    def Post(self):
+    def POST(self):
         data= request.get_json()
         self.db.append(data)
         success_message={
@@ -41,9 +42,9 @@ class RedFlag(Resource):
         flag=next(filter(lambda x:x["flag_id"]== flag_id, None))
         return {'flag_id': self.db}, 200 if flag_id else 404
 
-    def Post (self)
+    def Post (self):
         if next(filter(lambda x:x["flag_id"]== flag_id, None)):
-            return {'message':"An flag_id with '{}'already exixts".format(flag_id)}
+            return {'message':"An flag_id with '{}'already exixts".format(flag_id)},400
         
         data= request.get_json()
         self.db.append(data)
@@ -55,6 +56,7 @@ class RedFlag(Resource):
            "status" : 201,
            "data" : success_message
         }), 201) 
+
 
 
 
