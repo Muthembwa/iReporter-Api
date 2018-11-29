@@ -18,7 +18,7 @@ class RedFlagTestCases (unittest.TestCase):
         
     def test_CreateFlag(self):
         #Test API can create a Red-Flag (POST request)
-        response=self.app.POST("/flags")
+        response=self.app.Post("/flags")
         result=json.loads(response, data=self.flags)
         self.assertEqual(result["msg"],"success")
         self.assertEqual(response.status_code,201)
@@ -40,7 +40,7 @@ class RedFlagTestCases (unittest.TestCase):
         response =self.app.POST("/flags/", data=self.flags)
         self.assertEqual(response.status_code,201)
         result_in_js=json.loads(response.data.decode('utf-8').replace("'","\"") )
-        result=self.app.GET(
+        result=self.app.Get(
             "/flags/{}".format(result_in_js["flag_id"])
         )
         self.assertEqual(result.status_code, 200)
