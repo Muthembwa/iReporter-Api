@@ -15,15 +15,7 @@ class RedFlags(Resource):
         self.id=len(Red_flags)+1
         
     def Post(self):
-        data = {
-            'Id' : self.id,
-            'createdOn' : datetime.datetime.utcnow(),
-            'createdBy' : request.json['createdBy'],
-            'type' : 'red-flags',
-            'location' : request.json['location'],
-            'status' : 'pending',
-            'comment' : request.json['comment']
-       }
+        data= request.get_json()
         self.db.append(data)
         success_message={
             "Id":self.id,
@@ -46,10 +38,23 @@ class RedFlag(Resource):
         self.flag_id=len(Red_flags)+1
 
     def Get(self):
-        for flag in self.db:
-            if flag ['flag_id']==self.flag_id:
-                return flag
-        return {'flag_id': None}, 404
+        flag=next(filter(lambda x:x["flag_id"]== flag_id, None))
+        return {'flag_id': self.db}, 200 if flag_id else 404
+
+    def Post (self)
+        if next(filter(lambda x:x["flag_id"]== flag_id, None)):
+            return {'message':"An flag_id with '{}'already exixts".format(flag_id)}
+        
+        data= request.get_json()
+        self.db.append(data)
+        success_message={
+            "Id":self.id,
+            "message":"Your Report Has Been Saved Successfully"
+        }      
+        return make_response(jsonify({
+           "status" : 201,
+           "data" : success_message
+        }), 201) 
 
 
 
