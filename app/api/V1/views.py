@@ -30,3 +30,9 @@ class iReporter(Resource):
            "status" : 201,
            "data" : success_message
         }), 201) 
+
+    def get (self):
+        return make_response(jsonify({
+            "status":200,
+            "Red-Flags":self.db
+        }),200)
