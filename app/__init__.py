@@ -1,11 +1,19 @@
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_restful import Api, Resource
 
-from .api.V1.views import RedFlags, RedFlag
+#local imports
+from .api.V1.views import IncidentsResource, IncidentResource
+from instance.config import app_config
+from .api.V1 import version_one as V1
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(app_config['development'])
+    app.config.from_pyfile('config.py')
+    app.register_blueprint(V1)
     api = Api(app)
-    api.add_resource(RedFlags, '/flags')
-    api.add_resource(RedFlag, '/flag/<int:flag_id>')
+    
+    
+    api.add_resource(IncidentsResource, '/Incidents')
+    api.add_resource(IncidentResource, '/Incident/<int:flag_id>')
     return app
