@@ -2,38 +2,35 @@ from flask_restful import Api, Resource
 from flask import jsonify, make_response, request
 import datetime
 
-Red_flags=[{'flag_id':1,  
-            'createdBy' : 'jafi',
-            'type' : 'red-flags',
-            'Location':'Thika',
-            'status' : 'pending',
-            'Comment':'dfffsfsfdsfsdfsdfdsfdfsdffdffdfdfffsdffffdf',
-            }]
+from .models import IncidenceModel
 
-class RedFlags(Resource):
+
+class IncidentsResource(Resource, IncidenceModel):
     def __init__(self):
-        self.db = Red_flags
-        self.id=len(Red_flags)+1
-        
-    def POST(self):
-        data= request.get_json()
-        self.db.append(data)
-        success_message={
-            "Id":self.id,
-            "message":"Your Report Has Been Saved Successfully"
-        }      
+        self.db = IncidenceModel()
+         
+
+    def Post(self):
+        data = request.get_json(force=True)
+        CreatedBy = data['CreatedBy']
+        IncidenceType = data['IncidenceType']
+        Location = data['Location']
+        Status = data['Status']
+        Comment = data['Comment'] 
+
+        resp= self.db.Save(CreatedBy, IncidenceType, Location, Status, Comment)     
         return make_response(jsonify({
-           "status" : 201,
-           "data" : success_message
+            "message":"Your Report Has Been Saved Successfully",
+            "Incident" : resp
         }), 201) 
 
     def Get(self):
+        resp=self.db.View()
         return make_response(jsonify({
-            "status":200,
-            "Red-Flags":self.db
+            "Incidents":resp
         }),200)
 
-class RedFlag(Resource):
+class IncidentResource(Resource,  IncidenceModel):
     def __init__(self, flag_id):
         self.db = Red_flags
         self.flag_id=len(Red_flags)+1
@@ -46,16 +43,18 @@ class RedFlag(Resource):
         if next(filter(lambda x:x["flag_id"]== flag_id, None)):
             return {'message':"An flag_id with '{}'already exixts".format(flag_id)},400
         
-        data= request.get_json()
-        self.db.append(data)
-        success_message={
-            "Id":self.id,
-            "message":"Your Report Has Been Saved Successfully"
-        }      
+        data = request.get_json(force=True)
+        CreatedBy = data["CreatedBy"]
+        IncidenceType = data["IncidenceType"]
+        Location = data["Location"]
+        Status = data["Status"]
+        Comment = data["Comment"] 
+
+        resp= self.db.Save(CreatedBy, IncidenceType, Location, Status, Comment)     
         return make_response(jsonify({
-           "status" : 201,
-           "data" : success_message
-        }), 201) 
+            "message":"Your Report Has Been Saved Successfully",
+            "Incident" : resp
+        }), 201)
 
 
 
