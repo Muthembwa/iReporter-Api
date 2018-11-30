@@ -1,0 +1,6 @@
+language: Python
+Install:
+ - pip install -r requirements.txt
+ - pip install coveralls codecove
+ - PIP install gunicorn
+scripts pytest --with coverage
