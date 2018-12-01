@@ -14,6 +14,6 @@ def create_app():
     api = Api(app)
     
     
-    api.add_resource(IncidentsResource, '/Incidents')
-    api.add_resource(IncidentResource, '/Incident/<int:flag_id>')
+    api.add_resource(IncidentsResource, '/incidents')
+    api.add_resource(IncidentResource, '/incident/<int:flag_id>')
     return app
