@@ -29,7 +29,7 @@ class RedFlags(Resource):
         }), 201)  
 
     def get(self):
-        resp=self.db.view()
+        resp =self.db.view()
         return make_response(jsonify({
             "Status" : 200,
             "All Red Flags":resp
@@ -40,20 +40,29 @@ class RedFlag(Resource):
         self.db = IncidenceModel()      
 
     def get(self, Id): 
-        Flag=self.db.viewOne(Id)
+        Flag =self.db.viewOne(Id)
         return make_response(jsonify({
             "Status" : 200,
             "your entry is": Flag
         }),200)
+        
+    def delete(self, Id):
+        Flag = self.db.deleteOne(Id)
+        return make_response(jsonify({
+            "Status" : 200,
+            "successfully deleted": self.db
+        }),200)
 
-   
+# class RedFlagComment():
+# def patch(self, Id):
+#         resp = self.db.editOne()
+#         success_message = "Red-flag"
+#         return make_response(jsonify({
+#             "status":200,
+#             "data": resp
+#         }),200)
 
-    
-
-
-
-
-
+ 
 
 
 
