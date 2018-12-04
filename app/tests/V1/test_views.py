@@ -11,14 +11,9 @@ class test_IncidentsTestCases (unittest.TestCase):
     #This represent the Red-flag test case
     def setUp(self):
         #test varriables to initialize app
+		self.client = self.app.test_client()
         self.app = create_app(config_name='testing')
-		self.client = self.app.test_client
-        self.test_flag= {
-                    "flag_id":1,  
-                    "Title":"Corruption in county finance office",
-                    "Comment":"dfffsfsfdsfsdfsdfdsfdfsdffdffdfdfffsdffffdf",
-                    "Location":"Thika"  
-                    }
+        self.test_flag = {"flag_id":1, "Title":"Corruption in county finance office", "Comment":"dfffsfsfdsfsdfsdfdsfdfsdffdffdfdfffsdffffdf", "Location":"Thika"}
         
     def test_CreateFlag(self):
         #Test API can create a Red-Flag (POST request)
