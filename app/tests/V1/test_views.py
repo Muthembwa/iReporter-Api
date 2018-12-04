@@ -2,18 +2,18 @@ import unittest
 import os
 import json
 
-from .tests import create_app
+from app import create_app
 
-INCIDENTS_URL = '/Incidents'
-INCIDENT_URL = '/Incident'
+INCIDENTS_URL = '/red-flags'
+INCIDENT_URL = '/red-flag/1'
 
 class test_IncidentsTestCases (unittest.TestCase):
     #This represent the Red-flag test case
     def setUp(self):
         #test varriables to initialize app
-        app.testing = True
-        self.app = app.test_client
-        self.Incidents= {
+        self.app = create_app(config_name='testing')
+		self.client = self.app.test_client
+        self.test_flag= {
                     "flag_id":1,  
                     "Title":"Corruption in county finance office",
                     "Comment":"dfffsfsfdsfsdfsdfdsfdfsdffdffdfdfffsdffffdf",
