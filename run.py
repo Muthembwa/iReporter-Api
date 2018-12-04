@@ -1,5 +1,9 @@
-from app import create_app
+from app import create_app, test
+import os
 
-app = create_app()
+config_name = os.getenv('APP_SETTINGS') # config_name = "development"
+app = create_app(config_name)
+test = test()
+
 if __name__ =='__main__':
-    app.run(debug=true)
+    app.run (debug=True)
