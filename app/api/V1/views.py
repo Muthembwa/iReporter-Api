@@ -41,6 +41,8 @@ class RedFlag(Resource):
 
     def get(self, Id): 
         Flag =self.db.viewOne(Id)
+        if not Flag: 
+            return make_response(jsonify({"Flag does not exist":404}), 404)
         return make_response(jsonify({
             "Status" : 200,
             "your entry is": Flag
@@ -53,14 +55,17 @@ class RedFlag(Resource):
             "successfully deleted": self.db
         }),200)
 
-# class RedFlagComment():
-# def patch(self, Id):
-#         resp = self.db.editOne()
-#         success_message = "Red-flag"
-#         return make_response(jsonify({
-#             "status":200,
-#             "data": resp
-#         }),200)
+
+    def patch( self, Id ):
+        Flag =self.db.viewOne(Id)
+        if not Flag: 
+            return make_response(jsonify({"Flag does not exist":404}), 404)
+        else:
+            data = Flag.update(request.get_json()) 
+            return make_response(jsonify({
+                "status":200,
+                "Comment edited successfuly":Flag
+            }),200)
 
  
 
@@ -74,3 +79,4 @@ class RedFlag(Resource):
 
 
 
+  
