@@ -3,11 +3,10 @@ class RedFlagModel():
 
     flags = []
     
-    def __init__ (self,CreatedBy, Location, Status, Comment):
+    def __init__ (self, CreatedBy, Location, Status, Comment):
        
         self.db=RedFlagModel.flags
         self.CreatedBy = CreatedBy
-        self.CeatedOn = now.strftime("%Y-%m-%d %H:%M") 
         self.Location = Location
         self.Status = Status
         self.Comment = Comment

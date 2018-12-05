@@ -4,26 +4,35 @@ import datetime
 
 from .models import RedFlagModel
 
+new_flag = RedFlagModel()
 
+class RedFlags(Resource, RedFlagModel):
+    def __init__(self):
+        self.db = RedFlagModel(CreatedBy, Location, Status, Comment)
+        self.CreatedBy = CreatedBy
+        self.Location = Location
+        self.Status = Status
+        self.Comment = Comment
 
-class RedFlags(Resource):
-    def __init__(self,CreatedBy, Location, Status, Comment):
-        self.db = RedFlagModel()
-         
 
     def post(self): 
-        daatedBy = data['CreatedBy']
-        Locta = request.get_json(force=True)
-        Creation = data['Location']
+        data = request.get_json(force=True)
+    
+        CreatedBy = data['CreatedBy']
+        Location = data['Location']
         Status = data['Status']
-        Comment = data['Comment'] 
+        Comment = data ['Comment'] 
 
-
-        new_flag = RedFlagModel(data)
-        resp = self.db.save(new_flag)
-        success_message={
-            "The Redflag": new_flag 
-        }      
+        data ={
+            'CreatedBy':CreatedBy,
+            'Location':Location,
+            'Status': Status,
+            'Comment':Comment
+        }
+ 
+        new_flag = RedFlagModel(CreatedBy, Location, Status, Comment)
+        resp = new_flag.save(data)
+         
         return make_response(jsonify({
            "Status" : 201,
            "data" : success_message
@@ -32,9 +41,8 @@ class RedFlags(Resource):
     def get(self):
         resp =self.db.view()
         return make_response(jsonify({
-            "Status" : 200,
-            "All Red Flags":resp
-        }),200)
+            "successfully deleted"
+        }),204)
 
 class RedFlag(Resource):
     def __init__(self):
@@ -46,15 +54,14 @@ class RedFlag(Resource):
             return make_response(jsonify({"Flag does not exist":404}), 404)
         return make_response(jsonify({
             "Status" : 200,
-            "your entry is": Flag
+            "data": Flag
         }),200)
         
     def delete(self, Id):
         Flag = self.db.deleteOne(Id)
         return make_response(jsonify({
-            "Status" : 200,
-            "successfully deleted": self.db
-        }),200)
+            "successfully deleted"
+        }),204)
 
 
     def patch( self, Id ):
@@ -65,7 +72,7 @@ class RedFlag(Resource):
             data = Flag.update(request.get_json()) 
             return make_response(jsonify({
                 "status":200,
-                "Comment edited successfuly":Flag
+                "data":data
             }),200)
 
  
