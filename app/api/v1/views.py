@@ -2,26 +2,27 @@ from flask_restful import Api, Resource
 from flask import jsonify, make_response, request
 import datetime
 
-from .models import IncidenceModel
+from .models import RedFlagModel
+
 
 
 class RedFlags(Resource):
-    def __init__(self):
-        self.db = IncidenceModel()
+    def __init__(self,CreatedBy, Location, Status, Comment):
+        self.db = RedFlagModel()
          
 
     def post(self): 
-        data = request.get_json(force=True)
-        CreatedBy = data['CreatedBy']
-        IncidenceType = data['IncidenceType']
-        Location = data['Location']
+        daatedBy = data['CreatedBy']
+        Locta = request.get_json(force=True)
+        Creation = data['Location']
         Status = data['Status']
         Comment = data['Comment'] 
-         
-        resp = self.db.save(CreatedBy, IncidenceType, Location, Status, Comment)
+
+
+        new_flag = RedFlagModel(data)
+        resp = self.db.save(new_flag)
         success_message={
-            "The Redflag":resp,
-            "message":"Your Report Has Been Saved Successfully"
+            "The Redflag": new_flag 
         }      
         return make_response(jsonify({
            "Status" : 201,
@@ -37,7 +38,7 @@ class RedFlags(Resource):
 
 class RedFlag(Resource):
     def __init__(self):
-        self.db = IncidenceModel()      
+        self.db = RedFlagModel()      
 
     def get(self, Id): 
         Flag =self.db.viewOne(Id)
