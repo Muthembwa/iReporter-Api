@@ -4,35 +4,28 @@ class RedFlagModel():
     flags = []
     
     def __init__ (self, CreatedBy, Location, Status, Comment):
-       
-        self.db=RedFlagModel.flags
         self.CreatedBy = CreatedBy
         self.Location = Location
         self.Status = Status
         self.Comment = Comment
+       # flags = RedFlagModel.flags
 
         #Generate Flag id incrementaly 
-       
-        if len(self.db)==0:
-            self.id=1
-        else:
-            self.id = len(self.db)+1 
-
-    def save (self, new_flag):
-        self.db.append(new_flag)
-        return new_flag
+        self.Id = len(RedFlagModel.flags)+1
+        
 
     def view(self):
-        return self.db
+        return RedFlagModel.flags
 
-    def viewOne(self, Id):
-        flag = next(filter(lambda flag:flag['Id'] == Id, self.db),None)
+    def viewOne(Id):
+        flag = next(filter(lambda flag:flag['Id'] == Id, RedFlagModel.flags),None)
         return flag
 
-    def deleteOne(self, Id):
-        flag = next(filter(lambda flag:flag['Id'] == Id, self.db))
-        self.db.remove(flag)
-        return self.db
+    def deleteOne(Id):
+        flag = next(filter(lambda flag:flag['Id'] == Id, RedFlagModel.flags),None)
+        RedFlagModel.flags.remove(flag)
+        return 
+
 
    
        

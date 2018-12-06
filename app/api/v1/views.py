@@ -1,55 +1,46 @@
-from flask_restful import Api, Resource 
+from flask_restful import Api, Resource, reqparse, abort 
 from flask import jsonify, make_response, request
 import datetime
 
+
 from .models import RedFlagModel
 
-new_flag = RedFlagModel()
 
-class RedFlags(Resource, RedFlagModel):
+def abort_if_dont_exist(Id):
+    if Id not in RedFlagModel.flags:
+        abort (404, message = "Red-Flag {} doesnt exist".format(Id))
+
+
+class RedFlags(Resource):
     def __init__(self):
-        self.db = RedFlagModel(CreatedBy, Location, Status, Comment)
-        self.CreatedBy = CreatedBy
-        self.Location = Location
-        self.Status = Status
-        self.Comment = Comment
+        self.db = RedFlagModel.flags
 
-
-    def post(self): 
-        data = request.get_json(force=True)
     
-        CreatedBy = data['CreatedBy']
-        Location = data['Location']
-        Status = data['Status']
-        Comment = data ['Comment'] 
-
-        data ={
-            'CreatedBy':CreatedBy,
-            'Location':Location,
-            'Status': Status,
-            'Comment':Comment
-        }
- 
-        new_flag = RedFlagModel(CreatedBy, Location, Status, Comment)
-        resp = new_flag.save(data)
-         
-        return make_response(jsonify({
-           "Status" : 201,
-           "data" : success_message
-        }), 201)  
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('CreatedBy')
+        parser.add_argument('Location') 
+        parser.add_argument('Status') 
+        parser.add_argument('Comment')
+        args = parser.parse_args() 
+        new_flag = RedFlagModel(CreatedBy= args['CreatedBy'],
+                                Location = args['Location'],
+                                Status = args['Status'], 
+                                Comment =  args['Comment'])
+        resp = self.db.append(new_flag.__dict__)
+        return "Successful", 201
+   
 
     def get(self):
-        resp =self.db.view()
-        return make_response(jsonify({
-            "successfully deleted"
-        }),204)
+        resp =self.db
+        return  resp,200
 
 class RedFlag(Resource):
     def __init__(self):
-        self.db = RedFlagModel()      
+        self.db = RedFlagModel.flags
 
     def get(self, Id): 
-        Flag =self.db.viewOne(Id)
+        Flag = RedFlagModel.viewOne(Id)
         if not Flag: 
             return make_response(jsonify({"Flag does not exist":404}), 404)
         return make_response(jsonify({
@@ -58,14 +49,16 @@ class RedFlag(Resource):
         }),200)
         
     def delete(self, Id):
-        Flag = self.db.deleteOne(Id)
-        return make_response(jsonify({
-            "successfully deleted"
-        }),204)
+        Flag = RedFlagModel.viewOne(Id)
+        if not Flag: 
+            return "Flag does not exist", 404
+        else:
+            Flag = RedFlagModel.deleteOne(Id)
+            return "Deleted successfully",200
 
 
     def patch( self, Id ):
-        Flag =self.db.viewOne(Id)
+        Flag = RedFlagModel.viewOne(Id)
         if not Flag: 
             return make_response(jsonify({"Flag does not exist":404}), 404)
         else:
