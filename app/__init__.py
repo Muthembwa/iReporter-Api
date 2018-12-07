@@ -4,7 +4,7 @@ import os
 import unittest
 
 #local imports
-from .api.v1.views import RedFlags, RedFlag #RedFlagComment
+from .api.v1.views import RedFlags, RedFlag 
 from instance.config import app_config
 from .api.v1 import version_one as v1 
 
@@ -18,7 +18,6 @@ def create_app(config_name):
         
     api.add_resource(RedFlags, '/api/v1/red-flags')
     api.add_resource(RedFlag, '/api/v1/red-flag/<int:Id>')
-    #api.add_resource(RedFlagComment, '/red-flag/<int:Id>/comment')
     return app
 
 def test():
