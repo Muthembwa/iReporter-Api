@@ -6,4 +6,4 @@ app = create_app(config_name)
 test = test()
 
 if __name__ =='__main__':
-    app.run (debug=True)
+    app.run 
